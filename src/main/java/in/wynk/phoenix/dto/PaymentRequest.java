@@ -1,66 +1,65 @@
 package in.wynk.phoenix.dto;
 
 public class PaymentRequest {
-	String tid;
-	String msisdn;
-	String deviceId;
-	int pin;
-	String merchantId;
-	String price;
 
-	public String getMsisdn() {
-		return msisdn;
-	}
+    String tid;
+    String msisdn;
+    String deviceId;
+    int    pin;
+    String merchantId;
+    String price;
 
-	public void setMsisdn(String msisdn) {
-		this.msisdn = msisdn;
-	}
+    public String getMsisdn() {
+        return msisdn;
+    }
 
-	public int getPin() {
-		return pin;
-	}
+    public void setMsisdn(String msisdn) {
+        this.msisdn = msisdn;
+    }
 
-	public void setPin(int pin) {
-		this.pin = pin;
-	}
+    public int getPin() {
+        return pin;
+    }
 
-	public String getMerchantId() {
-		return merchantId;
-	}
+    public void setPin(int pin) {
+        this.pin = pin;
+    }
 
-	public void setMerchantId(String merchantId) {
-		this.merchantId = merchantId;
-	}
+    public String getMerchantId() {
+        return merchantId;
+    }
 
-	public String getPrice() {
-		return price;
-	}
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public String getPrice() {
+        return price;
+    }
 
-	public String getTid() {
-		return tid;
-	}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-	public void setTid(String tid) {
-		this.tid = tid;
-	}
+    public String getTid() {
+        return tid;
+    }
 
-	public String getDeviceId() {
-		return deviceId;
-	}
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
 
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
-	}
+    public String getDeviceId() {
+        return deviceId;
+    }
 
-	@Override
-	public String toString() {
-		return "PaymentRequest [tid=" + tid + ", msisdn=" + msisdn
-				+ ", deviceId=" + deviceId + ", pin=" + pin + ", merchantId="
-				+ merchantId + ", price=" + price + "]";
-	}
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentRequest [tid=" + tid + ", msisdn=" + msisdn + ", deviceId=" + deviceId + ", pin=" + pin + ", merchantId=" + merchantId + ", price=" + price + "]";
+    }
 
 }
