@@ -95,4 +95,11 @@ public class Transaction {
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction [id=" + id + ", trxId=" + trxId + ", userId=" + userId + ", merchantId=" + merchantId + ", pinCode=" + pinCode + ", createdAt=" + createdAt + ", userUpdatedAmount="
+                + userUpdatedAmount + ", merchantUpdatedAmount=" + merchantUpdatedAmount + ", userConsentId=" + userConsentId + "]";
+    }
+
 }

@@ -68,4 +68,11 @@ public class TransactionResponse {
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionResponse [merchantAmount=" + merchantAmount + ", merchantId=" + merchantId + ", userMsisdn=" + userMsisdn + ", status=" + status + ", errorCode=" + errorCode
+                + ", errorMsg=" + errorMsg + "]";
+    }
+
 }

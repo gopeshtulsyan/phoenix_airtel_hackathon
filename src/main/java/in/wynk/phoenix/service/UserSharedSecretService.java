@@ -8,24 +8,27 @@ import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
 import in.wynk.phoenix.utils.TimeOTP;
+
+import java.security.SignatureException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.security.SignatureException;
-
 @Component
 public class UserSharedSecretService {
 
-    public static String secret1 = "Aastha";
-    public static String secret2 = "Priya";
+    public static String          secret1 = "Aastha";
+    public static String          secret2 = "Priya";
 
     @Autowired
-    private TransactionDao otpDao;
+    private TransactionDao        otpDao;
 
     @Autowired
-    private UserDao userDao;
+    private UserDao               userDao;
 
+    @Autowired
+    private MessageSendingService messageSendingService;
 
     public String createUserSharedSecret(String msisdn, String deviceId) throws SignatureException {
         if(msisdn == null || deviceId == null) {
@@ -37,16 +40,18 @@ public class UserSharedSecretService {
         return Integer.toString(Math.abs(sharedSecret.hashCode()));
     }
 
-    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId){
+    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId) {
         TransactionResponse transactionResponse = new TransactionResponse();
-        try{
+        try {
             Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, userConsentId);
-            if (transaction.getId()!=null)
+            if(transaction.getId() != null)
                 transactionResponse.setStatus(true);
-        }catch (IllegalArgumentException e){
+        }
+        catch (IllegalArgumentException e) {
             transactionResponse.setErrorCode("1001");
             transactionResponse.setErrorCode(e.getMessage());
-        }catch (IllegalStateException e){
+        }
+        catch (IllegalStateException e) {
             transactionResponse.setErrorCode("1002");
             transactionResponse.setErrorMsg(e.getMessage());
         }
@@ -54,15 +59,15 @@ public class UserSharedSecretService {
     }
 
     public User getSharedSecret(String deviceId, String msisdn) throws SignatureException {
-        if (StringUtils.isEmpty(deviceId) || StringUtils.isEmpty(msisdn)){
+        if(StringUtils.isEmpty(deviceId) || StringUtils.isEmpty(msisdn)) {
             throw new IllegalArgumentException("empty deviceId or msisdn");
         }
         String sharedSecret = null;
         User user = userDao.getUserByMsisdn(msisdn);
-        if (null == user)
+        if(null == user)
             throw new IllegalStateException("User doesn't exists");
         sharedSecret = user.getSharedSecrets().get(deviceId);
-        if (sharedSecret == null){
+        if(sharedSecret == null) {
             sharedSecret = createUserSharedSecret(msisdn, deviceId);
             user.getSharedSecrets().put(deviceId, sharedSecret);
             userDao.saveUser(user);
@@ -75,12 +80,12 @@ public class UserSharedSecretService {
         // send failure response
         TransactionResponse transactionResponse = new TransactionResponse();
         Transaction transaction = otpDao.getTransactionDetailsByUserConsentId(request.getUserConsentId());
-        if (null != transaction){
+        if(null != transaction) {
             transactionResponse.setErrorCode("5000");
             transactionResponse.setErrorMsg("Failure!! Due to unauthorized repeated transactions");
         }
         boolean validRequest = false;
-        long currentTime = System.currentTimeMillis()/1000;
+        long currentTime = System.currentTimeMillis() / 1000;
         String time;
         String key;
         User user = getSharedSecret(request.getDeviceId(), request.getMsisdn());
@@ -102,7 +107,10 @@ public class UserSharedSecretService {
             transactionResponse.setStatus(true);
             transactionResponse.setMerchantAmount(transaction.getMerchantUpdatedAmount());
             transactionResponse.setUserMsisdn(request.getMsisdn());
-        }else{
+            messageSendingService.sendMessage(transaction, request.getPrice());
+
+        }
+        else {
             transactionResponse.setErrorCode("5001");
             transactionResponse.setErrorMsg("Failure!! Due to invalid pincode");
         }

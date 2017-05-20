@@ -41,4 +41,10 @@ public class User {
     public void setAmount(float amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", msisdn=" + msisdn + ", sharedSecrets=" + sharedSecrets + ", amount=" + amount + "]";
+    }
+
 }
