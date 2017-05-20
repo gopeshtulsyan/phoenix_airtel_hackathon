@@ -1,15 +1,18 @@
 package in.wynk.phoenix.dao;
 
 import in.wynk.phoenix.entity.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by a1dmiuxe(gopesh.tulsyan) on 20/05/17.
  */
 
+@Service
 public class UserDao {
     @Autowired
     MongoTemplate hackMongoTemplate;
