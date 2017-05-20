@@ -1,3 +1,5 @@
+package in.wynk.phoenix;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +12,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by a1dmiuxe(gopesh.tulsyan) on 20/05/17.
  */
 @Configuration
-@PropertySource("classpath:${spring.profiles.active}/app.properties")
+@PropertySource("classpath:dev/app.properties")
 public class AppConfig {
 
     @Value("${redis.host}")
