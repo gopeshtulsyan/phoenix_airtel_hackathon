@@ -6,11 +6,12 @@ import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
+
+import java.security.SignatureException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.security.SignatureException;
 
 @Component
 public class UserSharedSecretService {
@@ -36,8 +37,7 @@ public class UserSharedSecretService {
 
         String sharedSecret = null;
         sharedSecret = EncryptionUtils.calculateRFC2104HMAC(deviceId, msisdn);
-        return sharedSecret;
-
+        return Integer.toString(Math.abs(sharedSecret.hashCode()));
     }
 
     public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId){
