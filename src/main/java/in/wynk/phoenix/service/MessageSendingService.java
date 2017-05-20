@@ -35,7 +35,7 @@ public class MessageSendingService {
             String userMsisdn = CommonUtils.get10DigitMsisdn(transactionResponse.getUserId());
             StringBuilder sb = new StringBuilder();
             String UserMessage = sb.append("An amount of Rs. ").append(price).append("has been transferred to ").append(transactionResponse.getMerchantId()).append(". Your updated balance is Rs.")
-                    .append(transactionResponse.getUserUpdatedAmount()).append(". Keep using Airtel Payments Bank").toString();
+                    .append(transactionResponse.getUserUpdatedAmount()).append(" and transaction ID is ").append(transactionResponse.getTrxId()).append(". Keep using Airtel Payments Bank").toString();
             URI url = new URIBuilder(messageUrl).build();
             Map<String, Object> payload1 = new HashMap<String, Object>();
             payload1.put("message", UserMessage);
@@ -57,7 +57,8 @@ public class MessageSendingService {
             String merchantMsisdn = CommonUtils.get10DigitMsisdn(transactionResponse.getMerchantId());
             StringBuilder sb = new StringBuilder();
             String merchantMessage = sb.append("An amount of Rs. ").append(price).append("has been received from ").append(transactionResponse.getUserId()).append(". Your updated balance is Rs.")
-                    .append(transactionResponse.getMerchantUpdatedAmount()).append(". Keep using Airtel Payments Bank").toString();
+                    .append(transactionResponse.getMerchantUpdatedAmount()).append(" and transaction ID is ").append(transactionResponse.getTrxId()).append(". Keep using Airtel Payments Bank")
+                    .toString();
             URI url = new URIBuilder(messageUrl).build();
             Map<String, Object> payload2 = new HashMap<String, Object>();
             payload2.put("message", merchantMessage);

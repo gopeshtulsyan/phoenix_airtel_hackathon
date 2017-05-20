@@ -107,6 +107,7 @@ public class UserSharedSecretService {
             transactionResponse.setStatus(true);
             transactionResponse.setMerchantAmount(transaction.getMerchantUpdatedAmount());
             transactionResponse.setUserMsisdn(request.getMsisdn());
+            transactionResponse.setTxnId(transaction.getTrxId());
             messageSendingService.sendMessage(transaction, request.getPrice());
 
         }

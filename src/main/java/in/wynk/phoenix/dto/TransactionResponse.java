@@ -9,17 +9,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TransactionResponse {
 
-    private float merchantAmount;
+    private float   merchantAmount;
 
-    private String merchantId;
+    private String  merchantId;
 
-    private String userMsisdn;
+    private String  userMsisdn;
 
     private boolean status;
 
-    private String errorCode;
+    private String  errorCode;
 
-    private String errorMsg;
+    private String  errorMsg;
+
+    private String  txnId;
 
     public float getMerchantAmount() {
         return merchantAmount;
@@ -69,10 +71,18 @@ public class TransactionResponse {
         this.errorMsg = errorMsg;
     }
 
+    public String getTxnId() {
+        return txnId;
+    }
+
+    public void setTxnId(String txnId) {
+        txnId = txnId;
+    }
+
     @Override
     public String toString() {
         return "TransactionResponse [merchantAmount=" + merchantAmount + ", merchantId=" + merchantId + ", userMsisdn=" + userMsisdn + ", status=" + status + ", errorCode=" + errorCode
-                + ", errorMsg=" + errorMsg + "]";
+                + ", errorMsg=" + errorMsg + ", txnId=" + txnId + "]";
     }
 
 }
