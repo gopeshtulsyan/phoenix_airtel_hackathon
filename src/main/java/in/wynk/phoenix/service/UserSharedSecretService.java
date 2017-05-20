@@ -1,9 +1,12 @@
 package in.wynk.phoenix.service;
 
 import in.wynk.phoenix.dao.TransactionDao;
+import in.wynk.phoenix.dao.UserDao;
 import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
+import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class UserSharedSecretService {
     @Autowired
     TransactionDao otpDao;
 
+    @Autowired
+    UserDao userDao;
+
     public String getUserSharedSecret(String msisdn, String deviceId) {
         // TODO Auto-generated method stub
         return null;
@@ -27,11 +33,9 @@ public class UserSharedSecretService {
         if(msisdn == null || deviceId == null) {
             return null;
         }
-        String sharedSecretStr = null;
-        String sharedSecret = null;
-        sharedSecretStr = EncryptionUtils.generateHMACSignature(msisdn, deviceId, secret1);
-        sharedSecret = EncryptionUtils.calculateRFC2104HMAC(sharedSecretStr, secret2);
 
+        String sharedSecret = null;
+        sharedSecret = EncryptionUtils.calculateRFC2104HMAC(deviceId, msisdn);
         return sharedSecret;
 
     }
@@ -50,6 +54,23 @@ public class UserSharedSecretService {
             transactionResponse.setErrorMsg(e.getMessage());
         }
         return transactionResponse;
+    }
+
+    public String getSharedSecret(String deviceId, String msisdn){
+        if (StringUtils.isEmpty(deviceId) || StringUtils.isEmpty(msisdn)){
+            throw new IllegalArgumentException("empty deviceId or msisdn");
+        }
+        String sharedSecret = null;
+        User user = userDao.getUserByMsisdn(msisdn);
+        if (null == user)
+            throw new RuntimeException("User doesn't exists");
+        sharedSecret = user.getSharedSecrets().get(deviceId);
+        if (sharedSecret == null){
+            sharedSecret = getSharedSecret(deviceId, msisdn);
+            user.getSharedSecrets().put(deviceId, sharedSecret);
+            userDao.saveUser(user);
+        }
+        return sharedSecret;
     }
 
 }
