@@ -1,7 +1,5 @@
 package in.wynk.phoenix.handler;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import in.wynk.common.vas.dto.UpdateBalanceDetailsResponse;
 import in.wynk.netty.common.RequestMapping;
 import in.wynk.netty.common.ResponseType;
@@ -10,16 +8,16 @@ import in.wynk.phoenix.dto.PaymentRequest;
 import in.wynk.phoenix.service.UserSharedSecretService;
 import in.wynk.phoenix.utils.TimeOTP;
 import io.netty.handler.codec.http.HttpRequest;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller("/wynk/v1/payment.*")
 public class PaymentHandler implements IBaseRequestHandler {
@@ -63,6 +61,12 @@ public class PaymentHandler implements IBaseRequestHandler {
             // call mock API of Airtel for Money Tranfer
             // If transaction status is success then write in db
         }
+        return null;
+
+    }
+
+    @RequestMapping(value = "/wynk/v1/payment/messagePayment", method = RequestMethod.POST, responseType = ResponseType.JSON)
+    public UpdateBalanceDetailsResponse makePaymentThroughMessage(HttpRequest httprequest, Map<String, List<String>> urlParameters, String requestPayload) {
         return null;
 
     }
