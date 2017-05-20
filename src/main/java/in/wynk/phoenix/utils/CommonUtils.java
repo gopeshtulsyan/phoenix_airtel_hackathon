@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class CommonUtils {
@@ -38,6 +39,20 @@ public class CommonUtils {
             return null;
         }
 
+    }
+
+    public static String getStringParameter(Map<String, List<String>> urlParameters, String paramName) {
+        if(urlParameters == null) {
+            return null;
+        }
+        List<String> paramList = urlParameters.get(paramName);
+        if(CollectionUtils.isNotEmpty(paramList)) {
+            String nresultsParam = paramList.get(0);
+            if(nresultsParam != null) {
+                return nresultsParam.trim();
+            }
+        }
+        return null;
     }
 
     public static String get10DigitMsisdn(String msisdn) {
