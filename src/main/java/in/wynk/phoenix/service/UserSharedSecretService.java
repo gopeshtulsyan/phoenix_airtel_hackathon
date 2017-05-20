@@ -39,10 +39,10 @@ public class UserSharedSecretService {
         return Integer.toString(Math.abs(sharedSecret.hashCode()));
     }
 
-    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId) {
+    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, long latitude, long longitude) {
         TransactionResponse transactionResponse = new TransactionResponse();
         try {
-            Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, userConsentId);
+            Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, userConsentId, latitude, longitude);
             if(transaction.getId() != null)
                 transactionResponse.setStatus(true);
         }
@@ -101,7 +101,8 @@ public class UserSharedSecretService {
         if(validRequest) {
             // call mock API of Airtel for Money Tranfer
             // If transaction status is success then write in db
-            transaction = otpDao.deductAmount(request.getMsisdn(), request.getMerchantId(), Float.parseFloat(request.getPrice()), request.getPin(), request.getUserConsentId());
+            transaction = otpDao.deductAmount(request.getMsisdn(), request.getMerchantId(), Float.parseFloat(request.getPrice()), request.getPin(), request.getUserConsentId(),
+                    request.getLatitude(), request.getLongitude());
             transactionResponse.setMerchantId(request.getMerchantId());
             transactionResponse.setStatus(true);
             transactionResponse.setMerchantAmount(transaction.getMerchantUpdatedAmount());

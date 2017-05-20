@@ -26,7 +26,7 @@ public class TransactionDao {
 
     public final static String MERCHANT_COLLECTION_NAME = "merchants";
 
-    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId){
+    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, long latitude, long longitude){
         Criteria userCriteria = Criteria.where("msisdn").is(userMsisdn);
         Query query = new Query();
         query.addCriteria(userCriteria);
@@ -63,6 +63,8 @@ public class TransactionDao {
         transaction.setUserUpdatedAmount(user.getAmount());
         transaction.setPinCode(pinCode);
         transaction.setUserConsentId(userConsentId);
+        transaction.setLatitude(latitude);
+        transaction.setLongitude(longitude);
 
         hackMongoTemplate.save(transaction, TRANSACTION_COLLECTION_NAME);
 

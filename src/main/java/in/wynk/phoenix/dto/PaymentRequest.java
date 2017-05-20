@@ -2,12 +2,16 @@ package in.wynk.phoenix.dto;
 
 public class PaymentRequest {
 
-    String userConsentId;
-    String msisdn;
-    String deviceId;
-    int    pin;
-    String merchantId;
-    String price;
+    private String userConsentId;
+    private String msisdn;
+    private String deviceId;
+    private int    pin;
+    private String merchantId;
+    private String price;
+
+    private long latitude;
+
+    private long longitude;
 
     public String getMsisdn() {
         return msisdn;
@@ -55,6 +59,22 @@ public class PaymentRequest {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public long getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(long latitude) {
+        this.latitude = latitude;
+    }
+
+    public long getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(long longitude) {
+        this.longitude = longitude;
     }
 
     @Override
