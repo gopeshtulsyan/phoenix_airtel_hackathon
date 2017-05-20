@@ -76,7 +76,7 @@ public class TransactionResponse {
     }
 
     public void setTxnId(String txnId) {
-        txnId = txnId;
+        this.txnId = txnId;
     }
 
     @Override
