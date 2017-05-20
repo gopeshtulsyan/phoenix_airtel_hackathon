@@ -2,6 +2,8 @@ package in.wynk.phoenix.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import in.wynk.common.exception.WynkErrorType;
+import in.wynk.common.exception.WynkRuntimeException;
 import in.wynk.netty.common.RequestMapping;
 import in.wynk.netty.common.ResponseType;
 import in.wynk.netty.handler.IBaseRequestHandler;
@@ -11,6 +13,8 @@ import in.wynk.phoenix.dto.CreateUserResponse;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.service.UserSharedSecretService;
 import io.netty.handler.codec.http.HttpRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +27,7 @@ import java.util.Map;
 @Controller("/wynk/v1/registration.*")
 public class UserRegistrationHandler implements IBaseRequestHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserRegistrationHandler.class.getCanonicalName());
     private static final Gson       GSON = new GsonBuilder().create();
 
     @Autowired
@@ -49,8 +54,8 @@ public class UserRegistrationHandler implements IBaseRequestHandler {
             user.setSharedSecret(sharedSecrets);
             userDao.saveUser(user);
         }catch (Exception e){
-            response.setErrorCode("1005");
-            response.setErrorMsg(e.getMessage());
+            logger.error("Got error while login",e);
+            throw new WynkRuntimeException(WynkErrorType.BSY999);
         }
         finally {
             response.setDeviceId(request.getDeviceId());
