@@ -1,10 +1,41 @@
 package in.wynk.phoenix.dto;
 
-public class CreateUserResponse {
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class CreateUserResponse{
 
     String msisdn;
     String deviceId;
     String sharedSecret;
+    float amount;
+
+    String errorCode;
+    String errorMsg;
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
 
     public String getMsisdn() {
         return msisdn;

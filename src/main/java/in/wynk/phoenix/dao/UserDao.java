@@ -35,6 +35,6 @@ public class UserDao {
             throw new IllegalArgumentException("Null user");
         if (user.getMsisdn() == null)
             throw new IllegalArgumentException("User without msisdn");
-        hackMongoTemplate.save(user);
+        hackMongoTemplate.save(user,USER_COLLECTION_NAME);
     }
 }

@@ -6,12 +6,11 @@ import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
-
-import java.security.SignatureException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.security.SignatureException;
 
 @Component
 public class UserSharedSecretService {
@@ -57,21 +56,21 @@ public class UserSharedSecretService {
         return transactionResponse;
     }
 
-    public String getSharedSecret(String deviceId, String msisdn){
+    public User getSharedSecret(String deviceId, String msisdn) throws SignatureException {
         if (StringUtils.isEmpty(deviceId) || StringUtils.isEmpty(msisdn)){
             throw new IllegalArgumentException("empty deviceId or msisdn");
         }
         String sharedSecret = null;
         User user = userDao.getUserByMsisdn(msisdn);
         if (null == user)
-            throw new RuntimeException("User doesn't exists");
+            throw new IllegalStateException("User doesn't exists");
         sharedSecret = user.getSharedSecrets().get(deviceId);
         if (sharedSecret == null){
-            sharedSecret = getSharedSecret(deviceId, msisdn);
+            sharedSecret = createUserSharedSecret(msisdn, deviceId);
             user.getSharedSecrets().put(deviceId, sharedSecret);
             userDao.saveUser(user);
         }
-        return sharedSecret;
+        return user;
     }
 
 }
