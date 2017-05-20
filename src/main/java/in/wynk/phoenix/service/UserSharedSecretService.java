@@ -6,13 +6,14 @@ import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.security.SignatureException;
 
-@Service
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserSharedSecretService {
 
     public static String secret1 = "Aastha";
