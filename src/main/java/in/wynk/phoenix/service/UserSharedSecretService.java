@@ -2,16 +2,17 @@ package in.wynk.phoenix.service;
 
 import in.wynk.phoenix.dao.TransactionDao;
 import in.wynk.phoenix.dao.UserDao;
+import in.wynk.phoenix.dto.PaymentRequest;
 import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
-
-import java.security.SignatureException;
-
+import in.wynk.phoenix.utils.TimeOTP;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.security.SignatureException;
 
 @Component
 public class UserSharedSecretService {
@@ -20,15 +21,11 @@ public class UserSharedSecretService {
     public static String secret2 = "Priya";
 
     @Autowired
-    TransactionDao otpDao;
+    private TransactionDao otpDao;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
-    public String getUserSharedSecret(String msisdn, String deviceId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public String createUserSharedSecret(String msisdn, String deviceId) throws SignatureException {
         if(msisdn == null || deviceId == null) {
@@ -71,6 +68,45 @@ public class UserSharedSecretService {
             userDao.saveUser(user);
         }
         return user;
+    }
+
+    public TransactionResponse makePayment(PaymentRequest request) throws SignatureException {
+        // using trancation id get transaction log for db - if transaction found
+        // send failure response
+        TransactionResponse transactionResponse = new TransactionResponse();
+        Transaction transaction = otpDao.getTransactionDetailsByUserConsentId(request.getUserConsentId());
+        if (null != transaction){
+            transactionResponse.setErrorCode("5000");
+            transactionResponse.setErrorMsg("Failure!! Due to unauthorized repeated transactions");
+        }
+        boolean validRequest = false;
+        long currentTime = System.currentTimeMillis()/1000;
+        String time;
+        String key;
+        User user = getSharedSecret(request.getDeviceId(), request.getMsisdn());
+        for(int i = 1; i < 4; i++) {
+            time = Long.toHexString(currentTime / (30 * i));
+            String calculatedPin;
+            calculatedPin = TimeOTP.generateTOTP(user.getSharedSecrets().get(request.getDeviceId()), time, "6", "HmacSHA512");
+            int calculatedPinInt = Integer.parseInt(calculatedPin);
+            if(calculatedPinInt == request.getPin()) {
+                validRequest = true;
+                break;
+            }
+        }
+        if(validRequest) {
+            // call mock API of Airtel for Money Tranfer
+            // If transaction status is success then write in db
+            transaction = otpDao.deductAmount(request.getMsisdn(), request.getMerchantId(), Float.parseFloat(request.getPrice()), request.getPin(), request.getUserConsentId());
+            transactionResponse.setMerchantId(request.getMerchantId());
+            transactionResponse.setStatus(true);
+            transactionResponse.setMerchantAmount(transaction.getMerchantUpdatedAmount());
+            transactionResponse.setUserMsisdn(request.getMsisdn());
+        }else{
+            transactionResponse.setErrorCode("5001");
+            transactionResponse.setErrorMsg("Failure!! Due to invalid pincode");
+        }
+        return transactionResponse;
     }
 
 }

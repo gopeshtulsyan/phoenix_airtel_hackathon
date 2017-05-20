@@ -8,11 +8,42 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TransactionResponse {
+
+    private float merchantAmount;
+
+    private String merchantId;
+
+    private String userMsisdn;
+
     private boolean status;
 
     private String errorCode;
 
     private String errorMsg;
+
+    public float getMerchantAmount() {
+        return merchantAmount;
+    }
+
+    public void setMerchantAmount(float merchantAmount) {
+        this.merchantAmount = merchantAmount;
+    }
+
+    public String getUserMsisdn() {
+        return userMsisdn;
+    }
+
+    public void setUserMsisdn(String userMsisdn) {
+        this.userMsisdn = userMsisdn;
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
     public boolean isStatus() {
         return status;

@@ -18,7 +18,9 @@ public class Transaction {
 
     private long createdAt;
 
-    private float amount;
+    private float userUpdatedAmount;
+
+    private float merchantUpdatedAmount;
 
     private String userConsentId;
 
@@ -30,12 +32,20 @@ public class Transaction {
         this.userConsentId = userConsentId;
     }
 
-    public float getAmount() {
-        return amount;
+    public float getUserUpdatedAmount() {
+        return userUpdatedAmount;
     }
 
-    public void setAmount(float amount) {
-        this.amount = amount;
+    public void setUserUpdatedAmount(float userUpdatedAmount) {
+        this.userUpdatedAmount = userUpdatedAmount;
+    }
+
+    public float getMerchantUpdatedAmount() {
+        return merchantUpdatedAmount;
+    }
+
+    public void setMerchantUpdatedAmount(float merchantUpdatedAmount) {
+        this.merchantUpdatedAmount = merchantUpdatedAmount;
     }
 
     public String getId() {

@@ -9,7 +9,7 @@
 
 
 	<beans>
-		<mongo:mongo host="10.1.2.77" port="27017"
+		<mongo:mongo host="localhost" port="27017"
 			id="mongodbProperties">
 			<mongo:options connections-per-host="100"
 				threads-allowed-to-block-for-connection-multiplier="10"

@@ -37,11 +37,11 @@ public class TransactionDao {
         if (user.getAmount() < amount)
             throw new IllegalStateException("Not enough money in user account");
 
-        Criteria merchantCriteria = Criteria.where("merchantId").is(merchantId);
+        Criteria merchantCriteria = Criteria.where("msisdn").is(merchantId);
         query = new Query();
         query.addCriteria(merchantCriteria);
 
-        User merchant = hackMongoTemplate.findOne(query, User.class, MERCHANT_COLLECTION_NAME);
+        User merchant = hackMongoTemplate.findOne(query, User.class, USER_COLLECTION_NAME);
 
         if (null == merchant)
             throw new IllegalArgumentException("Merchant not found");
@@ -59,7 +59,8 @@ public class TransactionDao {
         transaction.setTrxId(UUID.randomUUID().toString());
         transaction.setCreatedAt(System.currentTimeMillis());
         transaction.setUserId(userMsisdn);
-        transaction.setAmount(amount);
+        transaction.setMerchantUpdatedAmount(merchant.getAmount());
+        transaction.setUserUpdatedAmount(user.getAmount());
         transaction.setPinCode(pinCode);
         transaction.setUserConsentId(userConsentId);
 
