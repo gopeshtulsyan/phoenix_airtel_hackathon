@@ -3,6 +3,7 @@ package in.wynk.phoenix.dto;
 public class PaymentRequest {
 	String tid;
 	String msisdn;
+	String deviceId;
 	int pin;
 	String merchantId;
 	String price;
@@ -47,10 +48,19 @@ public class PaymentRequest {
 		this.tid = tid;
 	}
 
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
 	@Override
 	public String toString() {
-		return "PaymentRequest [tid=" + tid + ", msisdn=" + msisdn + ", pin="
-				+ pin + ", merchantId=" + merchantId + ", price=" + price + "]";
+		return "PaymentRequest [tid=" + tid + ", msisdn=" + msisdn
+				+ ", deviceId=" + deviceId + ", pin=" + pin + ", merchantId="
+				+ merchantId + ", price=" + price + "]";
 	}
 
 }

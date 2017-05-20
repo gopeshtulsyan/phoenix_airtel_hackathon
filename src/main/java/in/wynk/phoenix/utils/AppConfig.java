@@ -1,4 +1,4 @@
-package in.wynk.phoenix;
+package in.wynk.phoenix.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

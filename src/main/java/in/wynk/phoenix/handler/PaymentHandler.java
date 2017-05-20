@@ -1,8 +1,8 @@
 package in.wynk.phoenix.handler;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import in.wynk.phoenix.TimeOTP;
 import in.wynk.phoenix.dto.PaymentRequest;
+import in.wynk.phoenix.utils.TimeOTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

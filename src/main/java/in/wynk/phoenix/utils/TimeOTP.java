@@ -1,4 +1,4 @@
-package in.wynk.phoenix;
+package in.wynk.phoenix.utils;
 
 import org.springframework.stereotype.Component;
 
