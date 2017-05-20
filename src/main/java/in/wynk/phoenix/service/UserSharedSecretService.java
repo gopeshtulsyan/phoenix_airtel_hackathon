@@ -78,6 +78,8 @@ public class UserSharedSecretService {
         // using trancation id get transaction log for db - if transaction found
         // send failure response
         TransactionResponse transactionResponse = new TransactionResponse();
+        if (request.getMsisdn().equalsIgnoreCase(request.getMerchantId()))
+            throw new IllegalArgumentException("Transaction Aborted!! MerchantId and userId is same");
         Transaction transaction = otpDao.getTransactionDetailsByUserConsentId(request.getUserConsentId());
         if(null != transaction) {
             transactionResponse.setErrorCode("5000");
