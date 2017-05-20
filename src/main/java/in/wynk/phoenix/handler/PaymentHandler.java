@@ -50,7 +50,7 @@ public class PaymentHandler implements IBaseRequestHandler {
                 time = String.valueOf(currentTime / (30 * i));
                 String calculatedPin = null;
 
-                calculatedPin = timeOTP.generateTOTP(key, time, "6", "SHA512");
+                calculatedPin = timeOTP.generateTOTP(key, time, "6", "HmacSHA512");
                 int calculatedPinInt = Integer.parseInt(calculatedPin);
                 if(calculatedPinInt == request.getPin()) {
                     validRequest = false;
