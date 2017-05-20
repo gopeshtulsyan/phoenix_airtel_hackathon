@@ -1,6 +1,5 @@
 package in.wynk.phoenix.dao;
 
-import in.wynk.phoenix.entity.Merchant;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +41,7 @@ public class TransactionDao {
         query = new Query();
         query.addCriteria(merchantCriteria);
 
-        Merchant merchant = hackMongoTemplate.findOne(query, Merchant.class, MERCHANT_COLLECTION_NAME);
+        User merchant = hackMongoTemplate.findOne(query, User.class, MERCHANT_COLLECTION_NAME);
 
         if (null == merchant)
             throw new IllegalArgumentException("Merchant not found");
@@ -53,7 +52,7 @@ public class TransactionDao {
 
         merchant.setAmount(merchant.getAmount() + amount);
 
-        hackMongoTemplate.save(merchant, MERCHANT_COLLECTION_NAME);
+        hackMongoTemplate.save(merchant, USER_COLLECTION_NAME);
 
         Transaction transaction = new Transaction();
         transaction.setMerchantId(merchantId);
