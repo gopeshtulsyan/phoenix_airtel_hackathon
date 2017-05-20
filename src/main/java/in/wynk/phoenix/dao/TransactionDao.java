@@ -56,7 +56,8 @@ public class TransactionDao {
 
         Transaction transaction = new Transaction();
         transaction.setMerchantId(merchantId);
-        transaction.setTrxId(UUID.randomUUID().toString());
+        StringBuilder txnId = new StringBuilder(UUID.randomUUID().toString().replace("-", ""));
+        transaction.setTrxId(txnId.substring(0, 9));
         transaction.setCreatedAt(System.currentTimeMillis());
         transaction.setUserId(userMsisdn);
         transaction.setMerchantUpdatedAmount(merchant.getAmount());

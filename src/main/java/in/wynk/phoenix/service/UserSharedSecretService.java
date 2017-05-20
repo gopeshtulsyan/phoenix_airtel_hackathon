@@ -88,7 +88,6 @@ public class UserSharedSecretService {
         boolean validRequest = false;
         long currentTime = System.currentTimeMillis() / 1000;
         String time;
-        String key;
         User user = getSharedSecret(request.getDeviceId(), request.getMsisdn());
         for(int i = 0; i < 3; i++) {
             time = Long.toHexString((currentTime - (i*30))/ 30);
@@ -109,8 +108,7 @@ public class UserSharedSecretService {
             transactionResponse.setStatus(true);
             transactionResponse.setMerchantAmount(transaction.getMerchantUpdatedAmount());
             transactionResponse.setUserMsisdn(request.getMsisdn());
-            StringBuilder txnId = new StringBuilder((transaction.getTrxId()).replace("-", ""));
-            transactionResponse.setTxnId(txnId.substring(0, 9));
+            transactionResponse.setTxnId(transaction.getTrxId());
             messageSendingService.sendMessage(transaction, request.getPrice());
 
         }
