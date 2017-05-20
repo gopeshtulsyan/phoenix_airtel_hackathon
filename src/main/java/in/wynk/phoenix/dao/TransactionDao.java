@@ -9,11 +9,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 /**
  * Created by a1dmiuxe(gopesh.tulsyan) on 20/05/17.
  */
 @Component
-public class OTPDao {
+public class TransactionDao {
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -24,7 +26,7 @@ public class OTPDao {
 
     public final static String MERCHANT_COLLECTION_NAME = "merchants";
 
-    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String trxId){
+    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId){
         Criteria userCriteria = Criteria.where("msisdn").is(userMsisdn);
         Query query = new Query();
         query.addCriteria(userCriteria);
@@ -54,11 +56,12 @@ public class OTPDao {
 
         Transaction transaction = new Transaction();
         transaction.setMerchantId(merchantId);
-        transaction.setTrxId(trxId);
+        transaction.setTrxId(UUID.randomUUID().toString());
         transaction.setCreatedAt(System.currentTimeMillis());
         transaction.setUserId(userMsisdn);
         transaction.setAmount(amount);
         transaction.setPinCode(pinCode);
+        transaction.setUserConsentId(userConsentId);
 
         mongoTemplate.save(transaction, TRANSACTION_COLLECTION_NAME);
 

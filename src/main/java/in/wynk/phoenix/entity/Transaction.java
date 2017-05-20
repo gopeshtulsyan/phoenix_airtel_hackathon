@@ -20,6 +20,16 @@ public class Transaction {
 
     private float amount;
 
+    private String userConsentId;
+
+    public String getUserConsentId() {
+        return userConsentId;
+    }
+
+    public void setUserConsentId(String userConsentId) {
+        this.userConsentId = userConsentId;
+    }
+
     public float getAmount() {
         return amount;
     }

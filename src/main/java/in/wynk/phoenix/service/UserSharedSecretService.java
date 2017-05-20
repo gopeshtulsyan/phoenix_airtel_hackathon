@@ -1,6 +1,6 @@
 package in.wynk.phoenix.service;
 
-import in.wynk.phoenix.dao.OTPDao;
+import in.wynk.phoenix.dao.TransactionDao;
 import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.utils.EncryptionUtils;
@@ -16,7 +16,7 @@ public class UserSharedSecretService {
     public static String secret2 = "Priya";
 
     @Autowired
-    OTPDao otpDao;
+    TransactionDao otpDao;
 
     public String getUserSharedSecret(String msisdn, String deviceId) {
         // TODO Auto-generated method stub
@@ -36,10 +36,10 @@ public class UserSharedSecretService {
 
     }
 
-    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String trxId){
+    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId){
         TransactionResponse transactionResponse = new TransactionResponse();
         try{
-            Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, trxId);
+            Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, userConsentId);
             if (transaction.getId()!=null)
                 transactionResponse.setStatus(true);
         }catch (IllegalArgumentException e){
