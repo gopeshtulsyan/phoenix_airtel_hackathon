@@ -4,7 +4,9 @@ import in.wynk.common.vas.dto.UpdateBalanceDetailsResponse;
 import in.wynk.netty.common.RequestMapping;
 import in.wynk.netty.common.ResponseType;
 import in.wynk.netty.handler.IBaseRequestHandler;
+import in.wynk.phoenix.dao.TransactionDao;
 import in.wynk.phoenix.dto.PaymentRequest;
+import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.service.UserSharedSecretService;
 import in.wynk.phoenix.utils.TimeOTP;
 import io.netty.handler.codec.http.HttpRequest;
@@ -30,10 +32,17 @@ public class PaymentHandler implements IBaseRequestHandler {
     @Autowired
     private UserSharedSecretService userSharedSecretService;
 
+    @Autowired
+    private TransactionDao          transactionDao;
+
     @RequestMapping(value = "/wynk/v1/payment/makePayment", method = RequestMethod.POST, responseType = ResponseType.JSON)
     public UpdateBalanceDetailsResponse makePayment(HttpRequest httprequest, Map<String, List<String>> urlParameters, String requestPayload) {
-
+        UpdateBalanceDetailsResponse updateBalanceDetailsResponse = new UpdateBalanceDetailsResponse();
         PaymentRequest request = GSON.fromJson(requestPayload, PaymentRequest.class);
+        Transaction transaction = transactionDao.getTransactionDetailsByUserConsentId(request.getUserConsentId());
+        if(null != transaction) {
+            updateBalanceDetailsResponse.setCode("");
+        }
         // using trancation id get transaction log for db - if transaction found
         // send failure response
         boolean validRequest = false;
@@ -53,7 +62,7 @@ public class PaymentHandler implements IBaseRequestHandler {
                 calculatedPin = timeOTP.generateTOTP(key, time, "6", "HmacSHA512");
                 int calculatedPinInt = Integer.parseInt(calculatedPin);
                 if(calculatedPinInt == request.getPin()) {
-                    validRequest = false;
+                    validRequest = true;
                 }
             }
         }
