@@ -8,12 +8,11 @@ import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
 import in.wynk.phoenix.utils.TimeOTP;
-
-import java.security.SignatureException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.security.SignatureException;
 
 @Component
 public class UserSharedSecretService {
@@ -89,8 +88,8 @@ public class UserSharedSecretService {
         String time;
         String key;
         User user = getSharedSecret(request.getDeviceId(), request.getMsisdn());
-        for(int i = 1; i < 4; i++) {
-            time = Long.toHexString(currentTime / (30 * i));
+        for(int i = 0; i < 3; i++) {
+            time = Long.toHexString((currentTime - (i*30))/ 30);
             String calculatedPin;
             calculatedPin = TimeOTP.generateTOTP(user.getSharedSecrets().get(request.getDeviceId()), time, "6", "HmacSHA512");
             int calculatedPinInt = Integer.parseInt(calculatedPin);

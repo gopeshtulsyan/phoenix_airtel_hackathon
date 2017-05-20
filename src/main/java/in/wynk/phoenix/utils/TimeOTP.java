@@ -7,10 +7,9 @@ import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -198,10 +197,11 @@ public class TimeOTP {
 ////                                "------------------+--------+--------+");
 //
 ////                for (int i=0; i<testTime.length; i++) {
-//                    long time = 49843312;
-//                System.out.println("TIme is:"+time);
-//                    long T = (time- T0)/X;
-//                    steps = Long.toHexString(49843323).toUpperCase();
+//                    long time = new Date().getTime();
+//
+//                    long T = time / TimeUnit.SECONDS.toMillis(30);
+//                System.out.println("TIme is:"+T);
+//                    steps = Long.toHexString(T).toUpperCase();
 //                System.out.println(steps);
 ////                    while (steps.length() < 16) steps = "0" + steps;
 ////                    String fmtTime = String.format("%1$-11s", testTime[i]);
