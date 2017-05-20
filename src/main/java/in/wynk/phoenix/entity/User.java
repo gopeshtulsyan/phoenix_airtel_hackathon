@@ -1,5 +1,8 @@
 package in.wynk.phoenix.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by a1dmiuxe(gopesh.tulsyan) on 20/05/17.
  */
@@ -11,9 +14,7 @@ public class User {
 
     private String msisdn;
 
-    private String sharedSecret;
-
-    private String deviceId;
+    private Map<String, String> sharedSecrets = new HashMap<>();
 
     private float amount;
 
@@ -25,20 +26,12 @@ public class User {
         this.msisdn = msisdn;
     }
 
-    public String getSharedSecret() {
-        return sharedSecret;
+    public Map<String, String> getSharedSecrets() {
+        return sharedSecrets;
     }
 
-    public void setSharedSecret(String sharedSecret) {
-        this.sharedSecret = sharedSecret;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setSharedSecret(Map<String, String> sharedSecrets) {
+        this.sharedSecrets = sharedSecrets;
     }
 
     public float getAmount() {

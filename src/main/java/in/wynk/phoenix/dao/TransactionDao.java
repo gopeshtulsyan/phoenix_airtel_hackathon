@@ -3,6 +3,7 @@ package in.wynk.phoenix.dao;
 import in.wynk.phoenix.entity.Merchant;
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class TransactionDao {
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    MongoTemplate hackMongoTemplate;
 
     public final static String TRANSACTION_COLLECTION_NAME = "transaction";
 
@@ -30,7 +31,7 @@ public class TransactionDao {
         Criteria userCriteria = Criteria.where("msisdn").is(userMsisdn);
         Query query = new Query();
         query.addCriteria(userCriteria);
-        User user = mongoTemplate.findOne(query, User.class, USER_COLLECTION_NAME);
+        User user = hackMongoTemplate.findOne(query, User.class, USER_COLLECTION_NAME);
         if (user == null)
             throw new IllegalArgumentException("User not found");
 
@@ -41,18 +42,18 @@ public class TransactionDao {
         query = new Query();
         query.addCriteria(merchantCriteria);
 
-        Merchant merchant = mongoTemplate.findOne(query, Merchant.class, MERCHANT_COLLECTION_NAME);
+        Merchant merchant = hackMongoTemplate.findOne(query, Merchant.class, MERCHANT_COLLECTION_NAME);
 
         if (null == merchant)
             throw new IllegalArgumentException("Merchant not found");
 
         user.setAmount(user.getAmount()-amount);
 
-        mongoTemplate.save(user, USER_COLLECTION_NAME);
+        hackMongoTemplate.save(user, USER_COLLECTION_NAME);
 
         merchant.setAmount(merchant.getAmount() + amount);
 
-        mongoTemplate.save(merchant, MERCHANT_COLLECTION_NAME);
+        hackMongoTemplate.save(merchant, MERCHANT_COLLECTION_NAME);
 
         Transaction transaction = new Transaction();
         transaction.setMerchantId(merchantId);
@@ -63,8 +64,18 @@ public class TransactionDao {
         transaction.setPinCode(pinCode);
         transaction.setUserConsentId(userConsentId);
 
-        mongoTemplate.save(transaction, TRANSACTION_COLLECTION_NAME);
+        hackMongoTemplate.save(transaction, TRANSACTION_COLLECTION_NAME);
 
         return transaction;
+    }
+
+    public Transaction getTransactionDetailsByUserConsentId(String userConsentId){
+        if (StringUtils.isEmpty(userConsentId)){
+            throw new IllegalArgumentException("Empty userConsentId");
+        }
+        Criteria criteria = Criteria.where("userConsentId").is(userConsentId);
+        Query query = new Query();
+        query.addCriteria(criteria);
+        return hackMongoTemplate.findOne(query, Transaction.class, TRANSACTION_COLLECTION_NAME);
     }
 }
