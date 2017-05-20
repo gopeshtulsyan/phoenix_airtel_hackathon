@@ -42,18 +42,20 @@ public class UserRegistrationHandler implements IBaseRequestHandler {
     @RequestMapping(value = "/wynk/v1/registration/login", method = RequestMethod.POST, responseType = ResponseType.JSON)
     public CreateUserResponse createUser(HttpRequest httprequest, Map<String, List<String>> urlParameters, String requestPayload) throws SignatureException {
         CreateUserRequest request = GSON.fromJson(requestPayload, CreateUserRequest.class);
+        String msisdn = CommonUtils.get10DigitMsisdn(request.getMsisdn());
+        String deviceId = request.getDeviceId();
         CreateUserResponse response = new CreateUserResponse();
         User user = null;
         try {
-            user = userSharedSecretService.getSharedSecret(request.getDeviceId(), request.getMsisdn());
+            user = userSharedSecretService.getSharedSecret(deviceId, msisdn);
         }
         catch (IllegalStateException e) {
             user = new User();
-            user.setMsisdn(request.getMsisdn());
+            user.setMsisdn(msisdn);
             user.setAmount(Float.parseFloat("100"));
             Map<String, String> sharedSecrets = new HashMap<String, String>();
-            String sharedSecret = userSharedSecretService.createUserSharedSecret(request.getMsisdn(), request.getDeviceId());
-            sharedSecrets.put(request.getDeviceId(), sharedSecret);
+            String sharedSecret = userSharedSecretService.createUserSharedSecret(msisdn, deviceId);
+            sharedSecrets.put(deviceId, sharedSecret);
             user.setSharedSecret(sharedSecrets);
             userDao.saveUser(user);
         }
@@ -62,9 +64,9 @@ public class UserRegistrationHandler implements IBaseRequestHandler {
             throw new WynkRuntimeException(WynkErrorType.BSY999);
         }
         finally {
-            response.setDeviceId(request.getDeviceId());
-            response.setMsisdn(request.getMsisdn());
-            response.setSharedSecret(user.getSharedSecrets().get(request.getDeviceId()));
+            response.setDeviceId(deviceId);
+            response.setMsisdn(msisdn);
+            response.setSharedSecret(user.getSharedSecrets().get(deviceId));
             response.setAmount(user.getAmount());
         }
         return response;
@@ -73,6 +75,7 @@ public class UserRegistrationHandler implements IBaseRequestHandler {
     @RequestMapping(value = "/wynk/v1/registration/getAmount", method = RequestMethod.GET, responseType = ResponseType.JSON)
     public Map<String, Float> getUserAmount(HttpRequest httprequest, Map<String, List<String>> urlParameters) {
         String msisdn = CommonUtils.getStringParameter(urlParameters, "msisdn");
+        msisdn = CommonUtils.get10DigitMsisdn(msisdn);
         User user = userDao.getUserByMsisdn(msisdn);
         Map<String, Float> response = new HashMap<String, Float>();
         if(user == null) {

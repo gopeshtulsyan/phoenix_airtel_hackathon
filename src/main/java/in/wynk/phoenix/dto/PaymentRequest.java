@@ -1,5 +1,7 @@
 package in.wynk.phoenix.dto;
 
+import in.wynk.phoenix.utils.CommonUtils;
+
 public class PaymentRequest {
 
     private String userConsentId;
@@ -18,7 +20,7 @@ public class PaymentRequest {
     }
 
     public void setMsisdn(String msisdn) {
-        this.msisdn = msisdn;
+        this.msisdn = CommonUtils.get10DigitMsisdn(msisdn);
     }
 
     public int getPin() {
@@ -34,7 +36,7 @@ public class PaymentRequest {
     }
 
     public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
+        this.merchantId = CommonUtils.get10DigitMsisdn(merchantId);
     }
 
     public String getPrice() {
