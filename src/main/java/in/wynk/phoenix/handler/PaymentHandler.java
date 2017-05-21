@@ -4,7 +4,7 @@ import in.wynk.common.exception.WynkErrorType;
 import in.wynk.common.exception.WynkRuntimeException;
 import in.wynk.netty.common.RequestMapping;
 import in.wynk.netty.common.ResponseType;
-import in.wynk.netty.handler.IBaseRequestHandler;
+import in.wynk.netty.handler.IBasicAuthRequestHandler;
 import in.wynk.phoenix.dto.MessageRequest;
 import in.wynk.phoenix.dto.PaymentRequest;
 import in.wynk.phoenix.dto.TransactionResponse;
@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Controller("/wynk/v1/payment.*")
-public class PaymentHandler implements IBaseRequestHandler {
+public class PaymentHandler implements IBasicAuthRequestHandler {
 
     private static final Gson       GSON   = new GsonBuilder().create();
 

@@ -4,7 +4,7 @@ import in.wynk.common.exception.WynkErrorType;
 import in.wynk.common.exception.WynkRuntimeException;
 import in.wynk.netty.common.RequestMapping;
 import in.wynk.netty.common.ResponseType;
-import in.wynk.netty.handler.IBaseRequestHandler;
+import in.wynk.netty.handler.IBasicAuthRequestHandler;
 import in.wynk.phoenix.dao.UserDao;
 import in.wynk.phoenix.dto.CreateUserRequest;
 import in.wynk.phoenix.dto.CreateUserResponse;
@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Controller("/wynk/v1/registration.*")
-public class UserRegistrationHandler implements IBaseRequestHandler {
+public class UserRegistrationHandler implements IBasicAuthRequestHandler {
 
     private static final Logger     logger = LoggerFactory.getLogger(UserRegistrationHandler.class.getCanonicalName());
     private static final Gson       GSON   = new GsonBuilder().create();
