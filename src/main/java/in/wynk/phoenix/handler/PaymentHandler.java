@@ -60,7 +60,7 @@ public class PaymentHandler implements IBasicAuthRequestHandler {
     public TransactionResponse makePaymentThroughMessage(HttpRequest httprequest, Map<String, List<String>> urlParameters, String requestPayload) {
         MessageRequest request = GSON.fromJson(requestPayload, MessageRequest.class);
         String message = request.getMessage();
-        String messageRequest[] = message.split("|");
+        String[] messageRequest = message.split("#");
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setUserConsentId(messageRequest[2]);
         paymentRequest.setMsisdn(CommonUtils.get10DigitMsisdn(messageRequest[0]));

@@ -51,7 +51,7 @@ public class PaymentRequest {
         return userConsentId;
     }
 
-    public void setUserConsentId(String tid) {
+    public void setUserConsentId(String userConsentId) {
         this.userConsentId = userConsentId;
     }
 
