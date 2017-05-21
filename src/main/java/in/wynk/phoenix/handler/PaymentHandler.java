@@ -62,12 +62,12 @@ public class PaymentHandler implements IBasicAuthRequestHandler {
         String message = request.getMessage();
         String messageRequest[] = message.split("|");
         PaymentRequest paymentRequest = new PaymentRequest();
-        paymentRequest.setUserConsentId(messageRequest[0]);
-        paymentRequest.setMsisdn(CommonUtils.get10DigitMsisdn(messageRequest[1]));
-        paymentRequest.setDeviceId(messageRequest[2]);
-        paymentRequest.setPin(Integer.valueOf(messageRequest[3]));
+        paymentRequest.setUserConsentId(messageRequest[2]);
+        paymentRequest.setMsisdn(CommonUtils.get10DigitMsisdn(messageRequest[0]));
+        paymentRequest.setDeviceId(messageRequest[5]);
+        paymentRequest.setPin(Integer.valueOf(messageRequest[1]));
         paymentRequest.setMerchantId(CommonUtils.get10DigitMsisdn(messageRequest[4]));
-        paymentRequest.setPrice(messageRequest[4]);
+        paymentRequest.setPrice(messageRequest[3]);
         TransactionResponse transactionResponse = new TransactionResponse();
         try {
             transactionResponse = userSharedSecretService.makePayment(paymentRequest);
