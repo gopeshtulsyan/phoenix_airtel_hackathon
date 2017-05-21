@@ -1,5 +1,7 @@
 package in.wynk.phoenix.handler;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import in.wynk.common.exception.WynkErrorType;
 import in.wynk.common.exception.WynkRuntimeException;
 import in.wynk.netty.common.RequestMapping;
@@ -11,18 +13,14 @@ import in.wynk.phoenix.dto.TransactionResponse;
 import in.wynk.phoenix.service.UserSharedSecretService;
 import in.wynk.phoenix.utils.CommonUtils;
 import io.netty.handler.codec.http.HttpRequest;
-
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.List;
+import java.util.Map;
 
 @Controller("/wynk/v1/payment.*")
 public class PaymentHandler implements IBasicAuthRequestHandler {
@@ -43,6 +41,9 @@ public class PaymentHandler implements IBasicAuthRequestHandler {
         }
         catch (IllegalArgumentException e){
             transactionResponse.setErrorCode("1009");
+            transactionResponse.setErrorMsg(e.getMessage());
+        }catch (IllegalStateException e){
+            transactionResponse.setErrorCode("2000");
             transactionResponse.setErrorMsg(e.getMessage());
         }
         catch (Exception e) {
