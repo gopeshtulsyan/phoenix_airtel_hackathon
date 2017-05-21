@@ -2,14 +2,15 @@ package in.wynk.phoenix.dao;
 
 import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
+
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 /**
  * Created by a1dmiuxe(gopesh.tulsyan) on 20/05/17.
@@ -26,7 +27,7 @@ public class TransactionDao {
 
     public final static String MERCHANT_COLLECTION_NAME = "merchants";
 
-    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, long latitude, long longitude){
+    public Transaction deductAmount(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, String latitude, String longitude) {
         Criteria userCriteria = Criteria.where("msisdn").is(userMsisdn);
         Query query = new Query();
         query.addCriteria(userCriteria);

@@ -11,9 +11,9 @@ public class PaymentRequest {
     private String merchantId;
     private String price;
 
-    private long latitude;
+    private String latitude;
 
-    private long longitude;
+    private String longitude;
 
     public String getMsisdn() {
         return msisdn;
@@ -63,19 +63,19 @@ public class PaymentRequest {
         this.deviceId = deviceId;
     }
 
-    public long getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 

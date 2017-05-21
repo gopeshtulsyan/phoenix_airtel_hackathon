@@ -8,11 +8,12 @@ import in.wynk.phoenix.entity.Transaction;
 import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.utils.EncryptionUtils;
 import in.wynk.phoenix.utils.TimeOTP;
+
+import java.security.SignatureException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.security.SignatureException;
 
 @Component
 public class UserSharedSecretService {
@@ -39,7 +40,7 @@ public class UserSharedSecretService {
         return Integer.toString(Math.abs(sharedSecret.hashCode()));
     }
 
-    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, long latitude, long longitude) {
+    public TransactionResponse makePayment(String userMsisdn, String merchantId, float amount, int pinCode, String userConsentId, String latitude, String longitude) {
         TransactionResponse transactionResponse = new TransactionResponse();
         try {
             Transaction transaction = otpDao.deductAmount(userMsisdn, merchantId, amount, pinCode, userConsentId, latitude, longitude);

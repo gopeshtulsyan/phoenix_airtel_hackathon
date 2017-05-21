@@ -22,9 +22,9 @@ public class Transaction {
 
     private float merchantUpdatedAmount;
 
-    private long latitude;
+    private String latitude;
 
-    private long longitude;
+    private String longitude;
 
     private String userConsentId;
 
@@ -100,19 +100,19 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    public long getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
