@@ -1,5 +1,7 @@
 package in.wynk.phoenix.handler;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import in.wynk.common.exception.WynkErrorType;
 import in.wynk.common.exception.WynkRuntimeException;
 import in.wynk.netty.common.RequestMapping;
@@ -12,20 +14,16 @@ import in.wynk.phoenix.entity.User;
 import in.wynk.phoenix.service.UserSharedSecretService;
 import in.wynk.phoenix.utils.CommonUtils;
 import io.netty.handler.codec.http.HttpRequest;
-
-import java.security.SignatureException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.security.SignatureException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller("/wynk/v1/registration.*")
 public class UserRegistrationHandler implements IBasicAuthRequestHandler {
@@ -42,6 +40,9 @@ public class UserRegistrationHandler implements IBasicAuthRequestHandler {
     @RequestMapping(value = "/wynk/v1/registration/login", method = RequestMethod.POST, responseType = ResponseType.JSON)
     public CreateUserResponse createUser(HttpRequest httprequest, Map<String, List<String>> urlParameters, String requestPayload) throws SignatureException {
         CreateUserRequest request = GSON.fromJson(requestPayload, CreateUserRequest.class);
+        if (null == request){
+            throw new WynkRuntimeException(WynkErrorType.BSY003);
+        }
         String msisdn = CommonUtils.get10DigitMsisdn(request.getMsisdn());
         String deviceId = request.getDeviceId();
         CreateUserResponse response = new CreateUserResponse();
